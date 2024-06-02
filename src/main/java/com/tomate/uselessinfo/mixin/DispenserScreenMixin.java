@@ -24,16 +24,16 @@ public abstract class DispenserScreenMixin extends AbstractContainerScreen<Dispe
     @Unique
     private static final String[] VIBRATIONS = {
             "All",
-            "Step/Swim/Flap",
+            "Walk/Jump/Swim/Climb/Crawl",
             "Projectile Land/Hit Ground/Splash",
-            "Item Interact Finish/Projectile Shoot/Instrument Play",
+            "Item Interact Finish/Projectile Shoot",
             "Entity Action/Elytra Glide",
             "Entity Dismount/Equip",
             "Entity Mount/Entity Interact/Shear",
             "Entity Damage",
             "Drink/Eat",
-            "Container Close/Block Close/Block Deactivate/Block Detach",
-            "Container Open/Block Open/Block Activate/Block Attach/Prime Fuse/Note Block Play",
+            "Container Close/Block Close/Block Deactivate",
+            "Container Open/Block Open/Block Activate/Note Block Play",
             "Block Change",
             "Block Destroy/Fluid Pickup",
             "Block Place/Fluid Place",
@@ -50,8 +50,15 @@ public abstract class DispenserScreenMixin extends AbstractContainerScreen<Dispe
     void render(GuiGraphics guiGraphics, int i, int j, float f, CallbackInfo ci) {
         var signalStrength = getSignalStrength();
         var mc = Minecraft.getInstance();
-        guiGraphics.drawString(mc.font, "Redstone Signal: %d".formatted(signalStrength), 9, 9, 0xffffff, true);
-        guiGraphics.drawString(mc.font, "▶ %s".formatted(VIBRATIONS[signalStrength]), 9, 9 + 16, 0xffffff, true);
+        var signal_string = "Redstone Signal: %d".formatted(signalStrength);
+        var vibration_string = "▶ %s".formatted(VIBRATIONS[signalStrength]);
+        // var max_string_width = Integer.max(mc.font.width(signal_string), mc.font.width(vibration_string));
+        // var horizontal_pos = (guiGraphics.guiWidth() / 2) - (max_string_width / 2);
+        guiGraphics.drawString(mc.font, signal_string,
+                (guiGraphics.guiWidth() / 2) - (mc.font.width(signal_string) / 2), 9,
+                0xffffff, true);
+        guiGraphics.drawString(mc.font, vibration_string,
+                (guiGraphics.guiWidth() / 2) - (mc.font.width(vibration_string) / 2), 9 + 16, 0xffffff, true);
     }
 
     @Unique
