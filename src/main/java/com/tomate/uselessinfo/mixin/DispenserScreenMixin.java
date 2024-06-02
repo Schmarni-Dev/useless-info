@@ -49,9 +49,9 @@ public abstract class DispenserScreenMixin extends AbstractContainerScreen<Dispe
     @Inject(method = "render", at = @At("TAIL"))
     void render(GuiGraphics guiGraphics, int i, int j, float f, CallbackInfo ci) {
         var signalStrength = getSignalStrength();
-
-        guiGraphics.drawString(Minecraft.getInstance().font, "Redstone Signal: %d".formatted(signalStrength), 9, 9, 0xffffff, true);
-        guiGraphics.drawString(Minecraft.getInstance().font, "▶ %s".formatted(VIBRATIONS[signalStrength]), 9, 9 + 16, 0xffffff, true);
+        var mc = Minecraft.getInstance();
+        guiGraphics.drawString(mc.font, "Redstone Signal: %d".formatted(signalStrength), 9, 9, 0xffffff, true);
+        guiGraphics.drawString(mc.font, "▶ %s".formatted(VIBRATIONS[signalStrength]), 9, 9 + 16, 0xffffff, true);
     }
 
     @Unique
@@ -59,9 +59,10 @@ public abstract class DispenserScreenMixin extends AbstractContainerScreen<Dispe
         var f = 0f;
         for (int i = 0; i < SLOTS; ++i) {
             ItemStack itemStack = menu.slots.get(i).getItem();
-            if (itemStack.isEmpty()) continue;
-            f += (float)itemStack.getCount() / (float)Math.min(MAX_COUNT, itemStack.getMaxStackSize());
+            if (itemStack.isEmpty())
+                continue;
+            f += (float) itemStack.getCount() / (float) Math.min(MAX_COUNT, itemStack.getMaxStackSize());
         }
-        return Mth.lerpDiscrete(f / (float)SLOTS, 0, 15);
+        return Mth.lerpDiscrete(f / (float) SLOTS, 0, 15);
     }
 }
